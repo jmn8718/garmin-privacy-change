@@ -1,0 +1,22 @@
+{
+  "name": "garmin-privacy-change",
+  "version": "1.0.0",
+  "description": "Script to automate the change the privacy of garmin's activities",
+  "main": "src/index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [
+    "garmin",
+    "node",
+    "bluebird",
+    "axios"
+  ],
+  "author": "Jose Navarro <jmn8718@gmail.com>",
+  "license": "ISC"
+}
