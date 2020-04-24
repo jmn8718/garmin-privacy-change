@@ -22,7 +22,6 @@ const processActivity = function (rawActivity = {}) {
     eventType: rawActivity.eventType,
     privacy: rawActivity.privacy,
   };
-  // console.log(data);
   return data;
 };
 
@@ -32,7 +31,7 @@ const PRIVACY_SETTINGS = {
   PRIVATE: "private",
 };
 
-const PRIVACY_TO_CHANGE = PRIVACY_SETTINGS.PUBLIC;
+const PRIVACY_TO_CHANGE = PRIVACY_SETTINGS.PRIVATE;
 
 const changePrivacy = async function (activity) {
   const result = {
@@ -48,7 +47,7 @@ const changePrivacy = async function (activity) {
         method: "PUT",
         path: `/activity-service/activity/${result.activityId}`,
         body: {
-          accessControlRuleDTO: { typeKey: PRIVACY_SETTINGS.PUBLIC },
+          accessControlRuleDTO: { typeKey: PRIVACY_TO_CHANGE },
           activityId: activity.activityId,
         },
       });
@@ -81,9 +80,9 @@ const listActivities = async function (options = {}) {
   }
 };
 
-const MAX_ACITIVITES = 400;
+const MAX_ACITIVITES = 200;
 const LIMIT_ACTIVITIES = 20;
-const START = 400;
+const START = 0;
 
 function init() {
   console.log("START");
