@@ -1,25 +1,26 @@
-const axios = require('axios')
+const axios = require("axios");
 
-const { GARMIN_HOST, GARMIN_COMMON_PATH, GARMIN_COOKIE } = require('./config')
+const { GARMIN_HOST, GARMIN_COMMON_PATH, GARMIN_COOKIE } = require("./config");
 
-const request = function(options = {}) {
-  const { method= 'GET', path= '/', body, query} = options;
+const request = function (options = {}) {
+  const { method = "GET", path = "/", body, query } = options;
 
   const data = {
     method,
     url: `${GARMIN_HOST}${GARMIN_COMMON_PATH}${path}`,
     headers: {
-      cookie: GARMIN_COOKIE
-    }
-  }
+      cookie: GARMIN_COOKIE,
+      "Content-Type": "application/json",
+    },
+  };
   if (body) {
-    data.body = body;
+    data.data = body;
   }
   if (query) {
-    data.params = query
+    data.params = query;
   }
-  return axios(data)
-}
+  return axios(data);
+};
 
 module.exports = {
   request

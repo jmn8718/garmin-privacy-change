@@ -37,6 +37,7 @@ const PRIVACY_TO_CHANGE = PRIVACY_SETTINGS.PUBLIC;
 const changePrivacy = async function (activity) {
   const result = {
     activityId: activity.activityId,
+    privacy: activity.privacy.typeKey,
   };
 
   try {
@@ -44,12 +45,8 @@ const changePrivacy = async function (activity) {
       result.status = 0;
     } else {
       const { status } = await request({
-        path: "/activitylist-service/activities/search/activities",
-        query: {
-          activityType: "running",
-          limit: 10,
-          start: 0,
-        },
+        method: "PUT",
+        path: `/activity-service/activity/${result.activityId}`,
         body: {
           accessControlRuleDTO: { typeKey: PRIVACY_SETTINGS.PUBLIC },
           activityId: activity.activityId,
@@ -65,14 +62,15 @@ const changePrivacy = async function (activity) {
   return result;
 };
 
-const listActivities = async function () {
+const listActivities = async function (options = {}) {
+  const { start = 0, limit = 20 } = options;
   try {
     const { data: responseData } = await request({
       path: "/activitylist-service/activities/search/activities",
       query: {
         activityType: "running",
-        limit: 10,
-        start: 0,
+        limit,
+        start,
       },
     });
     const data = responseData.map(processActivity);
@@ -83,4 +81,25 @@ const listActivities = async function () {
   }
 };
 
-listActivities();
+const MAX_ACITIVITES = 400;
+const LIMIT_ACTIVITIES = 20;
+const START = 400;
+
+function init() {
+  console.log("START");
+  map(
+    new Array(Math.ceil(MAX_ACITIVITES / LIMIT_ACTIVITIES)),
+    function (_, index) {
+      const start = START + index * LIMIT_ACTIVITIES;
+      console.log(`Processing next ${LIMIT_ACTIVITIES} from activity ${start}`);
+      return listActivities({
+        limit: LIMIT_ACTIVITIES,
+        start: START + index * LIMIT_ACTIVITIES,
+      });
+    },
+    { concurrency: 1 }
+  );
+  console.log("DONE");
+}
+
+init();
