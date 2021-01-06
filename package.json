@@ -4,7 +4,7 @@
   "description": "Script to automate the change the privacy of garmin's activities",
   "main": "src/index.js",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bluebird": "^3.7.2",
     "dotenv": "^8.2.0"
   },
